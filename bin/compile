@@ -1,0 +1,8 @@
+#!/bin/sh
+
+BUILD_DIR=$1
+
+echo "-----> Generating apipie documentation with rake apipie:cache"
+
+cd $BUILD_DIR
+rake apipie:cache
