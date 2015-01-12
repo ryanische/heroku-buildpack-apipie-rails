@@ -1,6 +1,11 @@
 #!/bin/sh
 
 BUILD_DIR=$1
+ENV_DIR=$3
+
+for KEY in DATABASE_URL RACK_ENV RAILS_ENV LANG STAGING_SUBDOMAIN; do
+  [ -f $ENV_DIR/$KEY ] && export "$KEY=$(cat $ENV_DIR/$KEY)"
+done
 
 echo "-----> Generating apipie documentation with rake apipie:cache"
 
