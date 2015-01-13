@@ -3,9 +3,14 @@
 BUILD_DIR=$1
 ENV_DIR=$3
 
-for KEY in DATABASE_URL RACK_ENV RAILS_ENV LANG STAGING_SUBDOMAIN; do
-  [ -f $ENV_DIR/$KEY ] && export "$KEY=$(cat $ENV_DIR/$KEY)"
-done
+# Load config vars into environment
+blacklist_regex=${3:-'^(PATH|GEM_PATH|GEM_HOME|GIT_DIR)$'}
+if [ -d "$ENV_DIR" ]; then
+  for e in $(ls $ENV_DIR); do
+    echo "$e" | grep -qvE "$blacklist_regex" && export "$e=$(cat $ENV_DIR/$e)"
+    :
+  done
+fi
 
 echo "-----> Generating apipie documentation with rake apipie:cache"
 
